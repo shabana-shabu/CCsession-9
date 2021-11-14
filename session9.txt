@@ -1,0 +1,69 @@
+1.What are controlled / uncontrolled components? Why do we use controlled components?
+Ans:A Controlled Component is one that takes its current value through props and notifies changes through callbacks like onChange. A parent component "controls" it by handling the callback and managing its own state and passing the new values as props to the controlled component. You could also call this a "dumb component".
+A Uncontrolled Component is one that stores its own state internally, and you query the DOM using a ref to find its current value when you need it. This is a bit more like traditional HTML.
+Controlled components have functions that govern the data passing into them on every onChange event occurs. This data is then saved to state and updated with setState() method. It makes component have better control over the form elements and data.
+
+2.What are side effects? Write a note about themWhat are side effects? Write a note about them
+Ans:A functional React component uses props and/or state to calculate the output. If the functional component makes calculations that don't target the output value, then these calculations are named side-effects.
+Examples of side-effects are fetch requests, manipulating DOM directly, using timer functions like setTimeout(), and more.
+The component rendering and side-effect logic are independent. It would be a mistake to perform side-effects directly in the body of the component, which is primarily used to compute the output.
+
+3.What is the uni-directional data flow in React?
+Ans:In React uni_directional means:
+      state is passed to the view and to child components
+      actions are triggered by the view
+      actions can update the state
+      the state change is passed to the view and to child components
+
+4.List down and explain the 3 ways in which useEffect() hook can be used, with relevant examples.
+Ans: componentDidMount
+     componentDidUpdate
+     componentWillUnmount
+
+
+ componentDidMount
+
+function Counter() {
+  const [count, setCount] = useState(localStorage.getItem("count") || 0);
+
+  useEffect(() => {
+    localStorage.setItem("count", count);
+  }, [count]);
+  return (
+    <div>
+      <h3>You clicked {count} times</h3>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      <button onClick={() => setCount(count - 1)}>-</button>
+    </div>
+  );
+}
+
+
+
+
+componentDidUpdate
+
+function Greate({ name }) {
+  const message = `Hello, ${name}!`;
+  useEffect(() => {
+    document.title = `Greetings to ${name}`;
+  }, [name]);
+  return <div>{message} </div>;
+}
+
+
+
+componentWillUnmount
+
+function RepeatMessage({ message }) {
+  useEffect(() => {
+    const id = setInterval(() => {
+      console.log(message);
+    }, 2000);
+    return () => {
+      clearInterval(id);
+    };
+  }, [message]);
+  return 
+  <div>I'm logging to console "{message}"</div>;
+}
